@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression Assumptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: inline-block;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #5b9bd5;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #4a86c5;
+        }
+        .plots-container {
+            display: flex;
+            gap: 20px;
+        }
+        .plot img {
+            width: 100%;
+            max-width: 1000px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Linear Regression Assumptions</h1>
+
+    <form method="POST">
+        <label for="N">Sample Size (N):</label>
+        <input type="number" id="N" name="N" value="{{ N }}" required><br>
+
+        <label for="mu">Mean (μ):</label>
+        <input type="number" step="any" id="mu" name="mu" value="{{ mu }}" required><br>
+
+        <label for="sigma2">Variance (σ²):</label>
+        <input type="number" step="any" id="sigma2" name="sigma2" value="{{ sigma2 }}" required><br>
+
+        <label for="S">Number of Simulations (S):</label>
+        <input type="number" id="S" name="S" value="{{ S }}" required><br><br>
+
+        <button type="submit">Generate</button>
+    </form>
+
+    {% if plot1 and plot2 %}
+        <div class="plots-container">
+            <div class="plot">
+                <h2>Generated Plot</h2>
+                <img src="{{ url_for('static', filename=plot1) }}" alt="Regression Plot">
+            </div>
+
+            <div class="plot">
+                <h2>Histogram of Slopes and Intercepts</h2>
+                <img src="{{ url_for('static', filename=plot2) }}" alt="Histograms">
+            </div>
+        </div>
+
+        <p>Proportion of slopes more extreme than calculated slope: {{ (slope_extreme * 100) | round(2) }}%</p>
+        <p>Proportion of intercepts more extreme than calculated intercept: {{ (intercept_extreme * 100) | round(2) }}%</p>
+    {% endif %}
+</body>
+</html>
